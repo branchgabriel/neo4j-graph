@@ -1,0 +1,53 @@
+CREATE (RollingHills:Course {name:'Rolling Hills', hasProTees:true, hasWaterFeature:true, dogRule:'notAllowed'})
+CREATE (CommunityVista:Course {name:'Community Vista', hasProTees:false, hasWaterFeature:false, dogRule:'leash'})
+CREATE (ForrestPark:Course {name:'Forrest Park', hasProTees:true, hasWaterFeature:true, dogRule:'allowed'})
+CREATE (MemorialPark:Course {name:'Memorial Park', hasProTees:false, hasWaterFeature:true, dogRule:'leash'})
+
+CREATE (JohnSmith:Player {name:'John Smith', status:'amature', handicap:2})
+CREATE (GabrielBranch:Player {name:'Gabriel Branch', status:'amature', handicap:6})
+CREATE (BillyMcGuier:Player {name:'Billy McGuier', status:'pro', handicap:0})
+CREATE (HappyGladison:Player {name:'Happy Gladison', status:'amature', handicap:4})
+CREATE (GeorgeBush:Player {name:'George Bush', status:'amature', handicap:6})
+CREATE (JulioMendez:Player {name:'Julio Mendez', status:'pro', handicap:0})
+CREATE (DuquanUnderwood:Player {name:'Duquan Underwood', status:'amature', handicap:2})
+
+CREATE
+  (JohnSmith)-[:PLAYED_AT {score:[60]}]->(RollingHills),
+  (GabrielBranch)-[:PLAYED_AT {score:[66]}]->(RollingHills),
+  (BillyMcGuier)-[:PLAYED_AT {score:[54]}]->(RollingHills),
+  (HappyGladison)-[:PLAYED_AT {score:[70]}]->(RollingHills),
+  (GeorgeBush)-[:PLAYED_AT {score:[58]}]->(RollingHills),
+  (JulioMendez)-[:PLAYED_AT {score:[62]}]->(RollingHills),
+  (DuquanUnderwood)-[:PLAYED_AT {score:[59]}]->(RollingHills),
+  (JohnSmith)-[:PLAYED_AT {score:[63]}]->(CommunityVista),
+  (GabrielBranch)-[:PLAYED_AT {score:[78]}]->(CommunityVista),
+  (BillyMcGuier)-[:PLAYED_AT {score:[58]}]->(CommunityVista),
+  (HappyGladison)-[:PLAYED_AT {score:[59]}]->(CommunityVista),
+  (GeorgeBush)-[:PLAYED_AT {score:[67]}]->(CommunityVista),
+  (JulioMendez)-[:PLAYED_AT {score:[54]}]->(CommunityVista),
+  (DuquanUnderwood)-[:PLAYED_AT {score:[65]}]->(CommunityVista),
+  (JohnSmith)-[:PLAYED_AT {score:[54]}]->(ForrestPark),
+  (GabrielBranch)-[:PLAYED_AT {score:[68]}]->(ForrestPark),
+  (BillyMcGuier)-[:PLAYED_AT {score:[59]}]->(ForrestPark),
+  (HappyGladison)-[:PLAYED_AT {score:[65]}]->(ForrestPark),
+  (GeorgeBush)-[:PLAYED_AT {score:[66]}]->(ForrestPark),
+  (JulioMendez)-[:PLAYED_AT {score:[57]}]->(ForrestPark),
+  (DuquanUnderwood)-[:PLAYED_AT {score:[62]}]->(ForrestPark),
+  (JohnSmith)-[:PLAYED_AT {score:[62]}]->(MemorialPark),
+  (GabrielBranch)-[:PLAYED_AT {score:[55]}]->(MemorialPark),
+  (BillyMcGuier)-[:PLAYED_AT {score:[58]}]->(MemorialPark),
+  (HappyGladison)-[:PLAYED_AT {score:[69]}]->(MemorialPark),
+  (GeorgeBush)-[:PLAYED_AT {score:[64]}]->(MemorialPark),
+  (JulioMendez)-[:PLAYED_AT {score:[58]}]->(MemorialPark),
+  (DuquanUnderwood)-[:PLAYED_AT {score:[61]}]->(MemorialPark)  
+  
+CREATE
+  (JohnSmith)-[:WON_AT]->(ForrestPark),
+  (GabrielBranch)-[:WON_AT]->(MemorialPark),
+  (BillyMcGuier)-[:WON_AT]->(RollingHills),
+  (JulioMendez)-[:WON_AT]->(CommunityVista)
+ 
+MATCH (RollingHills {name:"Rolling Hills"}) RETURN RollingHills
+MATCH (waterFeature:Course) WHERE waterFeature.hasWaterFeature=true RETURN waterFeature:name 
+MATCH (gabriel:Player {name: "Gabriel Branch"})-[:WON_AT]->(gabrielWins) RETURN gabriel,gabrielWins
+MATCH (players:Player)-[relatedTo]-(:Course {name: "Forrest Park"}) RETURN players.name, Type(relatedTo), relatedTo
